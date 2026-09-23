@@ -188,3 +188,11 @@ When the user corrects an agent approach, add or tighten one concrete rule here 
 - For DNS DHCP reset, keep the cmdlet reset and explicitly set IPv4 and IPv6 DNS source to DHCP.
 - Public pull-request diffs may be sent to configured external review services without a separate privacy approval; do not block the review loop on upload authorization for this public repository.
 - Keep install-tab favicon loading overlapped with app-entry rendering; do not replace native WPF loading with a deferred second phase unless visible completion time is proven no slower than `main`.
+
+## Personal LTSC Fork
+
+This fork targets a Windows IoT Enterprise LTSC gaming PC. Keep its personal application selection separate from the general upstream catalog until the owner approves the list. The inventory and recovery plan is in `docs/windows-inventory-and-restore.md`; do not put private system exports, SSH keys, browser profiles, or recovery secrets in the repository.
+
+Installs from the winget source in this fork request machine scope. Keep Microsoft Store packages on their upstream path and review them separately for the personal selection. Do not silently retry a winget-source install in user scope when a package has no compatible machine installer.
+
+Use `ssh docker` for builds when the required runtime is available there. It is the home server, with files also reachable over Samba. Use `ssh openwrt` only for network or router work. Confirm the host and directory before remote commands; keep build-only tools off the gaming PC.

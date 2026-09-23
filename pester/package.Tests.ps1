@@ -131,15 +131,24 @@ Describe "Install-WinUtilProgramWinget" {
         Mock Start-Process { [pscustomobject]@{ ExitCode = 0 } }
     }
 
-    It "starts winget with install arguments" {
+    It "installs winget packages for the machine" {
         Install-WinUtilProgramWinget -Action Install -Programs @("Git.Git")
 
         Should -Invoke -CommandName Start-Process -Times 1 -Exactly -ParameterFilter {
             $FilePath -eq "winget" -and
-                (@($ArgumentList) -join "|") -eq "install|--id|Git.Git|--accept-package-agreements|--accept-source-agreements|--source|winget|--silent" -and
+                (@($ArgumentList) -join "|") -eq "install|--id|Git.Git|--accept-package-agreements|--accept-source-agreements|--source|winget|--scope|machine|--silent" -and
                 $NoNewWindow -eq $true -and
                 $Wait -eq $true -and
                 $PassThru -eq $true
+        }
+    }
+
+    It "keeps msstore install arguments without machine scope" {
+        Install-WinUtilProgramWinget -Action Install -Programs @("msstore:9NBLGGH4NNS1")
+
+        Should -Invoke -CommandName Start-Process -Times 1 -Exactly -ParameterFilter {
+            $FilePath -eq "winget" -and
+                (@($ArgumentList) -join "|") -eq "install|--id|9NBLGGH4NNS1|--accept-package-agreements|--accept-source-agreements|--source|msstore|--silent"
         }
     }
 

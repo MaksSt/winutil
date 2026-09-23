@@ -72,7 +72,13 @@ Function Install-WinUtilProgramWinget {
                     @("upgrade", "--id", $program, "--accept-package-agreements", "--accept-source-agreements", "--source", $source, "--include-unknown", "--silent")
                 }
             }
-            default     { @("install", "--id", $program, "--accept-package-agreements", "--accept-source-agreements", "--source", $source, "--silent") }
+            default {
+                $installArgs = @("install", "--id", $program, "--accept-package-agreements", "--accept-source-agreements", "--source", $source)
+                if ($source -eq "winget") {
+                    $installArgs += @("--scope", "machine")
+                }
+                $installArgs + "--silent"
+            }
         }
 
         $process = Start-Process -FilePath winget -ArgumentList $arguments -NoNewWindow -Wait -PassThru
