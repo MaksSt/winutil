@@ -1688,6 +1688,7 @@
         "description": "Telegram is a cloud-based instant messaging app known for its security features, speed, and simplicity.",
         "link": "https://telegram.org/",
         "winget": "Telegram.TelegramDesktop",
+        "scope": "user",
         "foss": true
     },
     "terminal": {
