@@ -50,9 +50,13 @@ Function Install-WinUtilProgramWinget {
 
         $upgradeAll = $Action -eq "Upgrade" -and $program -eq "all"
         $source = if ($upgradeAll) { "all configured sources" } else { "winget" }
+        $scope = "machine"
         if (-not $upgradeAll -and $program.StartsWith("msstore:", [System.StringComparison]::OrdinalIgnoreCase)) {
             $source = "msstore"
             $program = $program.Substring("msstore:".Length)
+        } elseif (-not $upgradeAll -and $program.StartsWith("user:", [System.StringComparison]::OrdinalIgnoreCase)) {
+            $scope = "user"
+            $program = $program.Substring("user:".Length)
         }
 
         Write-WinUtilLog -Component "Package" -Message "$Action winget package: $program (source: $source)"
@@ -75,7 +79,7 @@ Function Install-WinUtilProgramWinget {
             default {
                 $installArgs = @("install", "--id", $program, "--accept-package-agreements", "--accept-source-agreements", "--source", $source)
                 if ($source -eq "winget") {
-                    $installArgs += @("--scope", "machine")
+                    $installArgs += @("--scope", $scope)
                 }
                 $installArgs + "--silent"
             }

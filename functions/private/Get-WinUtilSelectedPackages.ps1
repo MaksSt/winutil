@@ -36,16 +36,20 @@ function Get-WinUtilSelectedPackages {
     }
 
     foreach ($package in $PackageList) {
+        $wingetId = $package.winget
+        if ($package.scope -eq "user" -and -not [string]::IsNullOrWhiteSpace([string]$wingetId) -and -not $wingetId.StartsWith("msstore:")) {
+            $wingetId = "user:$wingetId"
+        }
         switch ($Preference) {
             "Choco" {
                 if ([string]::IsNullOrWhiteSpace([string]$package.choco) -or $package.choco -eq "na") {
-                    Add-PackageId -Target $packagesWinget -PackageId $package.winget
+                    Add-PackageId -Target $packagesWinget -PackageId $wingetId
                 } else {
                     Add-PackageId -Target $packagesChoco -PackageId $package.choco
                 }
             }
             "Winget" {
-                Add-PackageId -Target $packagesWinget -PackageId $package.winget
+                Add-PackageId -Target $packagesWinget -PackageId $wingetId
             }
         }
     }

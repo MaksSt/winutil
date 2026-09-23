@@ -36,6 +36,13 @@ Describe "Get-WinUtilSelectedPackages" {
         @($result["Choco"]).Count | Should -Be 0
     }
 
+    It "marks an explicit user-scope winget exception" {
+        $packages = @([pscustomobject]@{ winget = "Discord.Discord"; choco = "discord"; scope = "user" })
+
+        $result = Get-WinUtilSelectedPackages -PackageList $packages -Preference "Winget"
+
+        (@($result["Winget"]) -join "|") | Should -Be "user:Discord.Discord"
+    }
     It "uses choco IDs and falls back to winget for na or missing choco IDs" {
         $packages = @(
             [pscustomobject]@{ winget = "Git.Git"; choco = "git" }
@@ -152,6 +159,14 @@ Describe "Install-WinUtilProgramWinget" {
         }
     }
 
+    It "installs an explicitly marked package for the current user" {
+        Install-WinUtilProgramWinget -Action Install -Programs @("user:Discord.Discord")
+
+        Should -Invoke -CommandName Start-Process -Times 1 -Exactly -ParameterFilter {
+            $FilePath -eq "winget" -and
+                (@($ArgumentList) -join "|") -eq "install|--id|Discord.Discord|--accept-package-agreements|--accept-source-agreements|--source|winget|--scope|user|--silent"
+        }
+    }
     It "starts winget with uninstall arguments and msstore source when requested" {
         Install-WinUtilProgramWinget -Action Uninstall -Programs @("msstore:9NBLGGH4NNS1")
 

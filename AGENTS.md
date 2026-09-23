@@ -193,6 +193,6 @@ When the user corrects an agent approach, add or tighten one concrete rule here 
 
 This fork targets a Windows IoT Enterprise LTSC gaming PC. Keep its personal application selection separate from the general upstream catalog until the owner approves the list. The inventory and recovery plan is in `docs/windows-inventory-and-restore.md`; do not put private system exports, SSH keys, browser profiles, or recovery secrets in the repository.
 
-Installs from the winget source in this fork request machine scope. Keep Microsoft Store packages on their upstream path and review them separately for the personal selection. Do not silently retry a winget-source install in user scope when a package has no compatible machine installer.
+Installs from the winget source in this fork request machine scope. A package can explicitly set "scope": "user" in config/applications.json when its WinGet manifest has no machine installer; Discord is the approved exception. Keep Microsoft Store packages on their upstream path and review them separately for the personal selection. Do not silently retry a winget-source install in user scope when a package has no compatible machine installer.
 
 Use `ssh docker` for builds when the required runtime is available there. It is the home server, with files also reachable over Samba. Use `ssh openwrt` only for network or router work. Confirm the host and directory before remote commands; keep build-only tools off the gaming PC.

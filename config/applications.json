@@ -194,7 +194,7 @@
         "content": "ChatGPT Desktop",
         "description": "The official ChatGPT desktop app for Windows, distributed through the Microsoft Store.",
         "link": "https://openai.com/chatgpt/download/",
-        "winget": "msstore:9NT1R1C2HH7J",
+        "winget": "msstore:9PLM9XGG6VKS",
         "foss": false
     },
     "chatterino": {
@@ -321,6 +321,7 @@
         "description": "Discord is a popular communication platform with voice, video, and text chat, designed for gamers but used by a wide range of communities.",
         "link": "https://discord.com/",
         "winget": "Discord.Discord",
+        "scope": "user",
         "foss": false
     },
     "dismtools": {
